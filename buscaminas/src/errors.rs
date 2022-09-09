@@ -2,4 +2,5 @@
 pub enum GameError {
     CouldNotOpenFile,
     CouldNotReadFile,
+    BombCellCantHaceAdjacentBombs
 }

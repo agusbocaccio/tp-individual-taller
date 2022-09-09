@@ -25,7 +25,6 @@ pub fn read_file() -> Result<Field, GameError> {
         }
     }
 
-
     Ok(Field::new(cells, rows, columns))
 }
 

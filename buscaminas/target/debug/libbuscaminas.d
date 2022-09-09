@@ -1,0 +1,1 @@
+/home/agustina/Escritorio/tp-individual-taller/buscaminas/target/debug/libbuscaminas.rlib: /home/agustina/Escritorio/tp-individual-taller/buscaminas/src/errors.rs /home/agustina/Escritorio/tp-individual-taller/buscaminas/src/lib.rs /home/agustina/Escritorio/tp-individual-taller/buscaminas/src/reader.rs /home/agustina/Escritorio/tp-individual-taller/buscaminas/src/structure.rs

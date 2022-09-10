@@ -1,6 +1,6 @@
 use std::io;
 
-use buscaminas::{errors::GameError, mine_finder::find_mines, reader::read_file, structure::Cell};
+use buscaminas::{errors::GameError, mine_finder::find_mines, reader::read_file, writer::{write_file, show_field}};
 
 fn ask_path() -> String {
     let mut path = String::new();
@@ -17,15 +17,8 @@ fn main() -> Result<(), GameError> {
     let mut field = read_file(path)?;
     find_mines(&mut field);
 
-    for line in field {
-        for cell in line {
-            match cell {
-                Cell::EmptyCell { bombs } => print!("{}", bombs),
-                Cell::BombCell => print!("*"),
-            }
-        }
-        println!();
-    }
+    show_field(&field);
+    write_file(&field)?;
 
     Ok(())
 }

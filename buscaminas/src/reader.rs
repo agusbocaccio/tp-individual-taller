@@ -3,7 +3,7 @@ use std::{
     io::{BufRead, BufReader},
 };
 
-use crate::{errors::GameError, structure::Cell};
+use crate::{errors::GameError, cell::Cell};
 
 pub fn read_file(path: String) -> Result<Vec<Vec<Cell>>, GameError> {
     let file = match File::open(path) {
@@ -13,12 +13,15 @@ pub fn read_file(path: String) -> Result<Vec<Vec<Cell>>, GameError> {
 
     let buffered_reader = BufReader::new(file);
     let mut field = vec![];
-
+    
     for line in buffered_reader.lines() {
         let mut row = vec![];
         if let Ok(it) = line {
             for element in it.as_bytes().iter() {
-                row.push(Cell::new(*element));
+                match Cell::new(*element) {
+                    Some(it) => row.push(it),
+                    None => return Err(GameError::InvalidCharacter),
+                };
             }
         } else {
             return Err(GameError::CouldNotReadFile);

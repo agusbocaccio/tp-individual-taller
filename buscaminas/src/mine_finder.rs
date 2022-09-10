@@ -1,4 +1,4 @@
-use crate::structure::Cell;
+use crate::cell::Cell;
 
 pub fn find_mines(field: &mut Vec<Vec<Cell>>) {
     for i in 0..field.len() {

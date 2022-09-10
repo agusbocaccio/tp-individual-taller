@@ -1,9 +1,9 @@
 extern crate buscaminas;
 
-use buscaminas::{errors::GameError, reader::read_file};
+use buscaminas::{reader::read_file};
 
 #[test]
 fn open_non_existing_file() {
-    let value = read_file();
-    assert_eq!(value.err(), Some(GameError::CouldNotOpenFile));
+    let result = read_file("no_existe.txt".to_string());
+    assert!(result.is_err());
 }

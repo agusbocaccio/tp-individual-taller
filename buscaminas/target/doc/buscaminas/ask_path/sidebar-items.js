@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["ask_path","Asks the path to the user so it can be received through the standard input. It returns a String without the final \\n in case of success, otherwise it will return a GameError."]]};

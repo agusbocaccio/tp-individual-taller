@@ -2,7 +2,7 @@
 pub enum GameError {
     CouldNotOpenFile,
     CouldNotReadFile,
-    EmptyFile,
+    CouldNotReadStandardInput,
     InvalidCharacter,
     CoulNotWriteFile,
     InvalidField,

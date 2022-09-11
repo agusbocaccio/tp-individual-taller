@@ -1,5 +1,34 @@
 use crate::{cell::Cell, errors::GameError};
 
+/// Receives a Cell matrix and counts the adjacents bombs, changing the original matrix so it shows the bombs and the number of adjacent bombs of the empty cells.
+/// 
+/// # Errors
+///
+/// This function will return an error if the field is not rectangular or squared (GameError::InvalidField) .
+///
+/// # Examples
+///
+/// ```
+/// use buscaminas::mine_finder::find_mines;
+/// use buscaminas::cell::Cell;
+///
+/// let line1 = vec![Cell::new(b'*').unwrap(), Cell::new(b'.').unwrap()];
+/// let line2 = vec![Cell::new(b'*').unwrap(), Cell::new(b'.').unwrap()];
+/// let mut field = vec![line1, line2];
+///
+/// let result = find_mines(&mut field);
+///
+/// assert!(result.is_ok());
+/// assert_eq!(
+///     field,
+///     vec![
+///         vec![Cell::BombCell, Cell::EmptyCell { bombs: (2) }],
+///         vec![Cell::BombCell, Cell::EmptyCell { bombs: (2) }]
+///     ]
+/// )
+/// ```
+/// 
+
 pub fn find_mines(field: &mut Vec<Vec<Cell>>) -> Result<(), GameError> {
     if invalid_field(field) {
         return Err(GameError::InvalidField);
@@ -24,7 +53,7 @@ pub fn find_mines(field: &mut Vec<Vec<Cell>>) -> Result<(), GameError> {
     Ok(())
 }
 
-fn invalid_field(field: &mut Vec<Vec<Cell>>) -> bool {
+fn invalid_field(field: &Vec<Vec<Cell>>) -> bool {
     return field.iter().any(|line| line.len() != field[0].len());
 }
 
@@ -36,14 +65,14 @@ fn get_range(i: usize) -> std::ops::RangeInclusive<usize> {
     }
 }
 
-fn outside_field(k: usize, l: usize, field: &mut Vec<Vec<Cell>>, i: usize) -> bool {
+fn outside_field(k: usize, l: usize, field: &Vec<Vec<Cell>>, i: usize) -> bool {
     (k >= field.len()) || (l >= (*field[i]).len())
 }
 
 #[cfg(test)]
 mod mine_finder_test {
     use crate::cell::Cell;
-    use crate::mine_finder::find_mines;
+    use crate::mine_finder::{find_mines, outside_field};
 
     #[test]
     pub(crate) fn count_mines_squared_field() {
@@ -160,5 +189,93 @@ mod mine_finder_test {
         let result = find_mines(&mut field);
 
         assert!(result.is_err())
+    }
+
+    #[test]
+    pub(crate) fn row_inside_field() {
+        let line1 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'*').unwrap(),
+        ];
+        let line2 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'.').unwrap(),
+        ];
+        let line3 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'*').unwrap(),
+        ];
+
+        let field = vec![line1, line2, line3];
+        assert!(!outside_field(2, 2, &field, 0));
+    }
+
+    #[test]
+    pub(crate) fn column_inside_field() {
+        let line1 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'*').unwrap(),
+        ];
+        let line2 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'.').unwrap(),
+        ];
+        let line3 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'*').unwrap(),
+        ];
+
+        let field = vec![line1, line2, line3];
+        assert!(!outside_field(2, 2, &field, 0));
+    }
+
+    #[test]
+    pub(crate) fn row_outside_field() {
+        let line1 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'*').unwrap(),
+        ];
+        let line2 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'.').unwrap(),
+        ];
+        let line3 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'*').unwrap(),
+        ];
+
+        let field = vec![line1, line2, line3];
+        assert!(outside_field(4, 2, &field, 0));
+    }
+
+    #[test]
+    pub(crate) fn column_outside_field() {
+        let line1 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'*').unwrap(),
+        ];
+        let line2 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'.').unwrap(),
+        ];
+        let line3 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'*').unwrap(),
+        ];
+
+        let field = vec![line1, line2, line3];
+        assert!(outside_field(2, 5, &field, 0));
     }
 }

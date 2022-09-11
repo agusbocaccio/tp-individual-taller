@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["read_file",""]]};
+window.SIDEBAR_ITEMS = {"fn":[["read_file","This function receives a file path and opens and reads it, transforming the file information into a Cell matrix and returning it. The valid characters are the ASCII characters ‘*’ (bomb) and ‘.’ (empty)."]]};

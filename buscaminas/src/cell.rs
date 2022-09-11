@@ -14,8 +14,6 @@ impl Cell {
     /// If the element received is the character that represents a bomb (*), it will return the BombCell type.
     /// On the other case, if the element received is the character that represents an empty field(.), it will return the EmptyCell instead
     /// On every other case, it returns None
-    /// 
-    /// # Examples
     ///
     /// Basic usage:
     ///

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["cell",""],["errors",""],["mine_finder",""],["reader",""],["writer",""]]};
+window.SIDEBAR_ITEMS = {"mod":[["ask_path",""],["cell",""],["errors",""],["mine_finder",""],["reader",""],["writer",""]]};

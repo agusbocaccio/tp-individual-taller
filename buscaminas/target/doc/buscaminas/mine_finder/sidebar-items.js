@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["find_mines",""]]};
+window.SIDEBAR_ITEMS = {"fn":[["find_mines","Receives a Cell matrix and counts the adjacents bombs, changing the original matrix so it shows the bombs and the number of adjacent bombs of the empty cells."]]};

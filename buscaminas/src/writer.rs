@@ -1,8 +1,41 @@
 use std::{fs::File, io::Write};
 
-use crate::{errors::GameError, cell::Cell};
+use crate::{cell::Cell, errors::GameError};
 
+/// Receives a Cell matrix and prints the field with the * (bombs) and '.'(empty) characters.
+///
+///
+/// # Examples
+///
+/// ```
+/// use buscaminas::writer::show_field;
+/// use buscaminas::cell::Cell;
+/// let field = vec![
+///       vec![
+///           Cell::EmptyCell { bombs: (0) },
+///           Cell::BombCell,
+///           Cell::BombCell,
+///           Cell::EmptyCell { bombs: (0) }
+///       ],
+///       vec![
+///           Cell::EmptyCell { bombs: (0) },
+///           Cell::EmptyCell { bombs: (0) },
+///           Cell::BombCell,
+///           Cell::EmptyCell { bombs: (0) },
+///         ]];
+/// show_field(&field);
+/// ```
+///
+/// The output will be:
+/// 
+/// .**.
+/// 
+/// ..*.
+/// 
+///
 pub fn show_field(field: &Vec<Vec<Cell>>) {
+    println!();
+    println!("Result: ");
     for line in field {
         for cell in line {
             match cell {

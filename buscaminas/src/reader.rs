@@ -3,8 +3,41 @@ use std::{
     io::{BufRead, BufReader},
 };
 
-use crate::{errors::GameError, cell::Cell};
+use crate::{cell::Cell, errors::GameError};
 
+/// This function receives a file path and opens and reads it, transforming the file information into a Cell matrix and returning it.
+/// The valid characters are the ASCII characters '*' (bomb) and '.' (empty).
+/// # Errors
+///
+/// This function will return an error if the file has an invalid character (GameError::InvalidCharacter), if the file could not be opened (GameError::CouldNotOpenFile) or if there ir an error while reading the file (GameError::CouldNotReadFile)
+///
+/// # Examples
+///
+/// ```
+/// use buscaminas::reader::read_file;
+/// use buscaminas::cell::Cell;
+///
+/// // If he file has the following structure:
+/// // .**.
+/// // ..*.
+///
+/// assert_eq!(read_file("files/small_field.txt".to_string()).unwrap(),
+///   vec![
+///       vec![
+///           Cell::EmptyCell { bombs: (0) },
+///           Cell::BombCell,
+///           Cell::BombCell,
+///           Cell::EmptyCell { bombs: (0) }
+///       ],
+///       vec![
+///           Cell::EmptyCell { bombs: (0) },
+///           Cell::EmptyCell { bombs: (0) },
+///           Cell::BombCell,
+///           Cell::EmptyCell { bombs: (0) },
+///         ],
+/// ]
+/// )
+/// ```
 pub fn read_file(path: String) -> Result<Vec<Vec<Cell>>, GameError> {
     let file = match File::open(path) {
         Ok(it) => it,
@@ -13,7 +46,7 @@ pub fn read_file(path: String) -> Result<Vec<Vec<Cell>>, GameError> {
 
     let buffered_reader = BufReader::new(file);
     let mut field = vec![];
-    
+
     for line in buffered_reader.lines() {
         let mut row = vec![];
         if let Ok(it) = line {
@@ -32,11 +65,9 @@ pub fn read_file(path: String) -> Result<Vec<Vec<Cell>>, GameError> {
     Ok(field)
 }
 
-
-
 #[cfg(test)]
 mod reader_test {
-    use crate::reader::read_file;
+    use crate::{cell::Cell, reader::read_file};
 
     #[test]
     pub(crate) fn open_non_existing_file() {
@@ -60,5 +91,42 @@ mod reader_test {
     pub(crate) fn open_empty_file() {
         let result = read_file("files/empty_field.txt".to_string());
         assert!(result.is_ok());
+    }
+
+    #[test]
+    pub(crate) fn read_valid_file() {
+        assert_eq!(
+            read_file("files/field.txt".to_string()).unwrap(),
+            vec![
+                vec![
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::BombCell,
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::BombCell,
+                    Cell::EmptyCell { bombs: (0) }
+                ],
+                vec![
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::BombCell,
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::EmptyCell { bombs: (0) }
+                ],
+                vec![
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::BombCell,
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::EmptyCell { bombs: (0) }
+                ],
+                vec![
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::EmptyCell { bombs: (0) },
+                    Cell::EmptyCell { bombs: (0) }
+                ],
+            ]
+        )
     }
 }

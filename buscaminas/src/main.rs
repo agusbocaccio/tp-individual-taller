@@ -15,7 +15,7 @@ fn ask_path() -> String {
 fn main() -> Result<(), GameError> {
     let path = ask_path();
     let mut field = read_file(path)?;
-    find_mines(&mut field);
+    find_mines(&mut field)?;
 
     show_field(&field);
     write_file(&field)?;

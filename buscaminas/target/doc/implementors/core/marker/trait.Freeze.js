@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["buscaminas"] = [{"text":"impl Freeze for <a class=\"enum\" href=\"buscaminas/errors/enum.GameError.html\" title=\"enum buscaminas::errors::GameError\">GameError</a>","synthetic":true,"types":["buscaminas::errors::GameError"]},{"text":"impl Freeze for <a class=\"enum\" href=\"buscaminas/cell/enum.Cell.html\" title=\"enum buscaminas::cell::Cell\">Cell</a>","synthetic":true,"types":["buscaminas::cell::Cell"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

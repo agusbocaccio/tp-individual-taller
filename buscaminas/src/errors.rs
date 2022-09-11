@@ -5,4 +5,5 @@ pub enum GameError {
     EmptyFile,
     InvalidCharacter,
     CoulNotWriteFile,
+    InvalidField,
 }

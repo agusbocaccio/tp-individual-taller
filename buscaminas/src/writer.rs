@@ -27,11 +27,11 @@ use crate::{cell::Cell, errors::GameError};
 /// ```
 ///
 /// The output will be:
-/// 
+///
 /// .**.
-/// 
+///
 /// ..*.
-/// 
+///
 ///
 pub fn show_field(field: &Vec<Vec<Cell>>) {
     println!();
@@ -73,15 +73,15 @@ pub fn show_field(field: &Vec<Vec<Cell>>) {
 ///           Cell::EmptyCell { bombs: (0) },
 ///         ]];
 /// assert!(write_file(&field).is_ok());
-/// 
+///
 /// ```
-/// 
+///
 /// The output will be:
-/// 
+///
 /// .**.
-/// 
+///
 /// ..*.
-/// 
+///
 pub fn write_file(data: &Vec<Vec<Cell>>) -> Result<(), GameError> {
     let path = "out.txt";
 
@@ -90,32 +90,35 @@ pub fn write_file(data: &Vec<Vec<Cell>>) -> Result<(), GameError> {
         Err(_) => return Err(GameError::CouldNotOpenFile),
     };
 
-    if let Some(value) = write_data(data, &mut file) {
-        return value;
-    }
+    write_data(data, &mut file)?;
 
     Ok(())
 }
 
-fn write_data(data: &Vec<Vec<Cell>>, file: &mut File) -> Option<Result<(), GameError>> {
+/// Receives a Cell matrix and an opened valid File. Translates the Cell field into chars, '*' for bombs and '.' for empty cells and writes it in the file.
+///
+/// # Errors
+///
+/// This function will return an error if it could not write the file correctly (GameError::CoulNotWriteFile).
+fn write_data(data: &Vec<Vec<Cell>>, file: &mut File) -> Result<(), GameError> {
     for row in data {
         for cell in row {
             match cell {
                 Cell::EmptyCell { bombs } => {
                     if write!(file, "{}", *bombs).is_err() {
-                        return Some(Err(GameError::CoulNotWriteFile));
+                        return Err(GameError::CoulNotWriteFile);
                     }
                 }
                 Cell::BombCell => {
                     if write!(file, "*").is_err() {
-                        return Some(Err(GameError::CoulNotWriteFile));
+                        return Err(GameError::CoulNotWriteFile);
                     }
                 }
             }
         }
         if writeln!(file).is_err() {
-            return Some(Err(GameError::CoulNotWriteFile));
+            return Err(GameError::CoulNotWriteFile);
         }
     }
-    None
+    Ok(())
 }

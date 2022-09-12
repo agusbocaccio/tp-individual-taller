@@ -70,6 +70,7 @@ fn get_range(i: usize) -> std::ops::RangeInclusive<usize> {
     }
 }
 
+/// Returns true if row or column are out of the range of the field 
 fn outside_field(row: usize, column: usize, field: &Vec<Vec<Cell>>, i: usize) -> bool {
     (row >= field.len()) || (column >= (*field[i]).len())
 }
@@ -197,29 +198,7 @@ mod mine_finder_test {
     }
 
     #[test]
-    pub(crate) fn row_inside_field() {
-        let line1 = vec![
-            Cell::new(b'.').unwrap(),
-            Cell::new(b'*').unwrap(),
-            Cell::new(b'*').unwrap(),
-        ];
-        let line2 = vec![
-            Cell::new(b'.').unwrap(),
-            Cell::new(b'*').unwrap(),
-            Cell::new(b'.').unwrap(),
-        ];
-        let line3 = vec![
-            Cell::new(b'.').unwrap(),
-            Cell::new(b'*').unwrap(),
-            Cell::new(b'*').unwrap(),
-        ];
-
-        let field = vec![line1, line2, line3];
-        assert!(!outside_field(2, 2, &field, 0));
-    }
-
-    #[test]
-    pub(crate) fn column_inside_field() {
+    pub(crate) fn row_and_column_inside_field() {
         let line1 = vec![
             Cell::new(b'.').unwrap(),
             Cell::new(b'*').unwrap(),
@@ -281,7 +260,7 @@ mod mine_finder_test {
         ];
 
         let field = vec![line1, line2, line3];
-        assert!(outside_field(2, 5, &field, 0));
+        assert!(outside_field(2, 3, &field, 0));
     }
 
     #[test]

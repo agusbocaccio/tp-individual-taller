@@ -1,10 +1,17 @@
+/// There are two types of Cells. A Cell that represents an empty space and a Cell that represents a bomb.
+/// 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Cell {
+    /// Represents an empty cell. The bombs usize represents the adjacent bombs to the cell. It will be traslated from and to the character '.'
     EmptyCell { bombs: usize },
+    /// Represents a bomb cell. It will be traslated from and to the character '*'
     BombCell,
 }
 
+/// Binary character that represents a bomb. 
 const BOMB: u8 = b'*';
+
+/// Binary character that represents an empty cell.
 const EMPTY: u8 = b'.';
 
 impl Cell {

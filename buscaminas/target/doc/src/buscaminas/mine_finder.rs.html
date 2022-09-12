@@ -285,6 +285,11 @@
 <span id="279">279</span>
 <span id="280">280</span>
 <span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">cell::Cell</span>, <span class="ident">errors::GameError</span>};
 
 <span class="doccomment">/// Receives a Cell matrix and counts the adjacents bombs, changing the original matrix so it shows the bombs and the number of adjacent bombs of the empty cells.</span>
@@ -340,26 +345,32 @@
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">fn</span> <span class="ident">invalid_field</span>(<span class="ident">field</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Cell</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
+
+<span class="doccomment">/// Returns true if any row of the received field is longer than any other.</span>
+<span class="kw">fn</span> <span class="ident">invalid_field</span>(<span class="ident">field</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Cell</span><span class="op">&gt;</span>]) -&gt; <span class="ident">bool</span> {
     <span class="kw">return</span> <span class="ident">field</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">line</span><span class="op">|</span> <span class="ident">line</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">field</span>[<span class="number">0</span>].<span class="ident">len</span>());
 }
 
+<span class="doccomment">/// Returns a valid usize range. </span>
+<span class="doccomment">/// If i is zero or less than zero it will return a range (0..i).</span>
+<span class="doccomment">/// If i is more than zero it will return a range (i-1..i+1).</span>
 <span class="kw">fn</span> <span class="ident">get_range</span>(<span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="ident">std::ops::RangeInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-    <span class="kw">if</span> <span class="ident">i</span> <span class="op">==</span> <span class="number">0</span> {
+    <span class="kw">if</span> <span class="ident">i</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0</span> {
         <span class="number">0</span>..<span class="op">=</span><span class="ident">i</span> <span class="op">+</span> <span class="number">1</span>
     } <span class="kw">else</span> {
         <span class="ident">i</span> <span class="op">-</span> <span class="number">1</span>..<span class="op">=</span><span class="ident">i</span> <span class="op">+</span> <span class="number">1</span>
     }
 }
 
-<span class="kw">fn</span> <span class="ident">outside_field</span>(<span class="ident">k</span>: <span class="ident">usize</span>, <span class="ident">l</span>: <span class="ident">usize</span>, <span class="ident">field</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Cell</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span> {
-    (<span class="ident">k</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">field</span>.<span class="ident">len</span>()) <span class="op">|</span><span class="op">|</span> (<span class="ident">l</span> <span class="op">&gt;</span><span class="op">=</span> (<span class="kw-2">*</span><span class="ident">field</span>[<span class="ident">i</span>]).<span class="ident">len</span>())
+<span class="doccomment">/// Returns true if row or column are out of the range of the field </span>
+<span class="kw">fn</span> <span class="ident">outside_field</span>(<span class="ident">row</span>: <span class="ident">usize</span>, <span class="ident">column</span>: <span class="ident">usize</span>, <span class="ident">field</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Cell</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span> {
+    (<span class="ident">row</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">field</span>.<span class="ident">len</span>()) <span class="op">|</span><span class="op">|</span> (<span class="ident">column</span> <span class="op">&gt;</span><span class="op">=</span> (<span class="kw-2">*</span><span class="ident">field</span>[<span class="ident">i</span>]).<span class="ident">len</span>())
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">mine_finder_test</span> {
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cell::Cell</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mine_finder</span>::{<span class="ident">find_mines</span>, <span class="ident">outside_field</span>};
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mine_finder</span>::{<span class="ident">find_mines</span>, <span class="ident">outside_field</span>, <span class="ident">invalid_field</span>};
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">count_mines_squared_field</span>() {
@@ -479,29 +490,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">row_inside_field</span>() {
-        <span class="kw">let</span> <span class="ident">line1</span> <span class="op">=</span> <span class="macro">vec!</span>[
-            <span class="ident">Cell::new</span>(<span class="string">b&#39;.&#39;</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">Cell::new</span>(<span class="string">b&#39;*&#39;</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">Cell::new</span>(<span class="string">b&#39;*&#39;</span>).<span class="ident">unwrap</span>(),
-        ];
-        <span class="kw">let</span> <span class="ident">line2</span> <span class="op">=</span> <span class="macro">vec!</span>[
-            <span class="ident">Cell::new</span>(<span class="string">b&#39;.&#39;</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">Cell::new</span>(<span class="string">b&#39;*&#39;</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">Cell::new</span>(<span class="string">b&#39;.&#39;</span>).<span class="ident">unwrap</span>(),
-        ];
-        <span class="kw">let</span> <span class="ident">line3</span> <span class="op">=</span> <span class="macro">vec!</span>[
-            <span class="ident">Cell::new</span>(<span class="string">b&#39;.&#39;</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">Cell::new</span>(<span class="string">b&#39;*&#39;</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">Cell::new</span>(<span class="string">b&#39;*&#39;</span>).<span class="ident">unwrap</span>(),
-        ];
-
-        <span class="kw">let</span> <span class="ident">field</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">line1</span>, <span class="ident">line2</span>, <span class="ident">line3</span>];
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">outside_field</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="kw-2">&amp;</span><span class="ident">field</span>, <span class="number">0</span>));
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">column_inside_field</span>() {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">row_and_column_inside_field</span>() {
         <span class="kw">let</span> <span class="ident">line1</span> <span class="op">=</span> <span class="macro">vec!</span>[
             <span class="ident">Cell::new</span>(<span class="string">b&#39;.&#39;</span>).<span class="ident">unwrap</span>(),
             <span class="ident">Cell::new</span>(<span class="string">b&#39;*&#39;</span>).<span class="ident">unwrap</span>(),
@@ -563,7 +552,28 @@
         ];
 
         <span class="kw">let</span> <span class="ident">field</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">line1</span>, <span class="ident">line2</span>, <span class="ident">line3</span>];
-        <span class="macro">assert!</span>(<span class="ident">outside_field</span>(<span class="number">2</span>, <span class="number">5</span>, <span class="kw-2">&amp;</span><span class="ident">field</span>, <span class="number">0</span>));
+        <span class="macro">assert!</span>(<span class="ident">outside_field</span>(<span class="number">2</span>, <span class="number">3</span>, <span class="kw-2">&amp;</span><span class="ident">field</span>, <span class="number">0</span>));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">field_with_different_length_row_is_invalid</span>() {
+        <span class="kw">let</span> <span class="ident">line1</span> <span class="op">=</span> <span class="macro">vec!</span>[
+            <span class="ident">Cell::new</span>(<span class="string">b&#39;.&#39;</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">Cell::new</span>(<span class="string">b&#39;*&#39;</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">Cell::new</span>(<span class="string">b&#39;*&#39;</span>).<span class="ident">unwrap</span>(),
+        ];
+        <span class="kw">let</span> <span class="ident">line2</span> <span class="op">=</span> <span class="macro">vec!</span>[
+            <span class="ident">Cell::new</span>(<span class="string">b&#39;.&#39;</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">Cell::new</span>(<span class="string">b&#39;*&#39;</span>).<span class="ident">unwrap</span>(),
+        ];
+        <span class="kw">let</span> <span class="ident">line3</span> <span class="op">=</span> <span class="macro">vec!</span>[
+            <span class="ident">Cell::new</span>(<span class="string">b&#39;.&#39;</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">Cell::new</span>(<span class="string">b&#39;*&#39;</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">Cell::new</span>(<span class="string">b&#39;*&#39;</span>).<span class="ident">unwrap</span>(),
+        ];
+
+        <span class="kw">let</span> <span class="ident">field</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">line1</span>, <span class="ident">line2</span>, <span class="ident">line3</span>];
+        <span class="macro">assert!</span>(<span class="ident">invalid_field</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>));
     }
 }
 </code></pre></div>

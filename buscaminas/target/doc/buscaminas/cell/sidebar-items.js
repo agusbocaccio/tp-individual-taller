@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Cell",""]]};
+window.SIDEBAR_ITEMS = {"constant":[["BOMB","Binary character that represents a bomb. "],["EMPTY","Binary character that represents an empty cell."]],"enum":[["Cell","There are two types of Cells. A Cell that represents an empty space and a Cell that represents a bomb."]]};

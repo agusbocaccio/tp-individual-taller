@@ -51,7 +51,7 @@ pub fn show_field(field: &Vec<Vec<Cell>>) {
 ///
 /// # Errors
 ///
-/// This function will return an error if the file could not be created (GameError::CouldNotOpenFile) or if the data could not be written on the file (GameError::CouldNotOpenFileu)
+/// This function will return an error if the file could not be created (`GameError::CouldNotOpenFile`) or if the data could not be written on the file (`GameError::CouldNotOpenFile`)
 ///
 /// # Examples
 ///
@@ -99,7 +99,7 @@ pub fn write_file(data: &Vec<Vec<Cell>>) -> Result<(), GameError> {
 ///
 /// # Errors
 ///
-/// This function will return an error if it could not write the file correctly (GameError::CoulNotWriteFile).
+/// This function will return an error if it could not write the file correctly (`GameError::CoulNotWriteFile`).
 fn write_data(data: &Vec<Vec<Cell>>, file: &mut File) -> Result<(), GameError> {
     for row in data {
         for cell in row {

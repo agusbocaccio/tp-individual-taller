@@ -9,7 +9,7 @@ use crate::{cell::Cell, errors::GameError};
 /// The valid characters are the ASCII characters '*' (bomb) and '.' (empty).
 /// # Errors
 ///
-/// This function will return an error if the file has an invalid character (GameError::InvalidCharacter), if the file could not be opened (GameError::CouldNotOpenFile) or if there ir an error while reading the file (GameError::CouldNotReadFile)
+/// This function will return an error if the file has an invalid character (`GameError::InvalidCharacter`), if the file could not be opened (`GameError::CouldNotOpenFile`) or if there ir an error while reading the file (`GameError::CouldNotReadFile`)
 ///
 /// # Examples
 ///

@@ -3,11 +3,11 @@ use std::io;
 use crate::errors::GameError;
 
 /// Asks the path to the user so it can be received through the standard input.
-/// It returns a String without the final \n in case of success, otherwise it will return a GameError.
+/// It returns a String without the final \n in case of success, otherwise it will return a `GameError`.
 ///
 /// # Errors
-/// * GameError::CouldNotReadStandardInput
-/// 
+/// This function returns `GameError::CouldNotReadStandardInput` if there is a problem reading the standard input.
+///
 /// # Examples
 ///
 /// ```
@@ -15,7 +15,7 @@ use crate::errors::GameError;
 ///
 /// assert!(ask_path().is_ok());
 /// ```
-/// 
+///
 pub fn ask_path() -> Result<String, GameError> {
     let mut path = String::new();
     println!("Please enter the file path:");

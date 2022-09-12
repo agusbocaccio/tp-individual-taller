@@ -7,12 +7,12 @@ mod integration_test {
 
     use buscaminas::{cell::Cell, mine_finder::find_mines, reader::read_file, writer::write_file};
 
-    // field: 
+    // field:
     // ..*.*.
     // *.*...
     // *.*.*.
     //
-    //expected output: 
+    //expected output:
     //13*3*1
     //*5*522
     //*4*3*1
@@ -100,5 +100,43 @@ mod integration_test {
         }
 
         assert_eq!(lines_written, vec!["13*3*1", "*5*522", "*4*3*1"])
+    }
+
+    #[test]
+    pub(crate) fn can_not_read_invalid_file() {
+        let result_reading = read_file("files/invalid_field.txt".to_string());
+        assert!(result_reading.is_err());
+    }
+
+    // Field entered:
+    //  .*..
+    //  *.*.
+    //  *.
+    // Expected: error
+    #[test]
+    pub(crate) fn can_not_transform_invalid_field() {
+        let result_reading = read_file("files/irregular_field.txt".to_string());
+        assert!(result_reading.is_ok());
+        let mut field = result_reading.unwrap();
+
+        let line1 = vec![
+            Cell::EmptyCell { bombs: (0) },
+            Cell::BombCell,
+            Cell::EmptyCell { bombs: (0) },
+            Cell::EmptyCell { bombs: (0) },
+        ];
+        let line2 = vec![
+            Cell::BombCell,
+            Cell::EmptyCell { bombs: (0) },
+            Cell::BombCell,
+            Cell::EmptyCell { bombs: (0) },
+        ];
+        let line3 = vec![Cell::BombCell, Cell::EmptyCell { bombs: (0) }];
+
+        let expected_field = vec![line1, line2, line3];
+        assert_eq!(field, expected_field);
+
+        let transformation_result = find_mines(&mut field);
+        assert!(transformation_result.is_err());
     }
 }

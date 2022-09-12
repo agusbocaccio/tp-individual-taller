@@ -1,10 +1,10 @@
 use crate::{cell::Cell, errors::GameError};
 
 /// Receives a Cell matrix and counts the adjacents bombs, changing the original matrix so it shows the bombs and the number of adjacent bombs of the empty cells.
-/// 
+///
 /// # Errors
 ///
-/// This function will return an error if the field is not rectangular or squared (GameError::InvalidField) .
+/// This function will return an error if the field is not rectangular or squared (`GameError::InvalidField`) .
 ///
 /// # Examples
 ///
@@ -27,7 +27,7 @@ use crate::{cell::Cell, errors::GameError};
 ///     ]
 /// )
 /// ```
-/// 
+///
 
 pub fn find_mines(field: &mut Vec<Vec<Cell>>) -> Result<(), GameError> {
     if invalid_field(field) {
@@ -53,24 +53,23 @@ pub fn find_mines(field: &mut Vec<Vec<Cell>>) -> Result<(), GameError> {
     Ok(())
 }
 
-
 /// Returns true if any row of the received field is longer than any other.
 fn invalid_field(field: &[Vec<Cell>]) -> bool {
     return field.iter().any(|line| line.len() != field[0].len());
 }
 
-/// Returns a valid usize range. 
+/// Returns a valid usize range.
 /// If i is zero or less than zero it will return a range (0..i).
 /// If i is more than zero it will return a range (i-1..i+1).
 fn get_range(i: usize) -> std::ops::RangeInclusive<usize> {
-    if i <= 0 {
+    if i == 0 {
         0..=i + 1
     } else {
         i - 1..=i + 1
     }
 }
 
-/// Returns true if row or column are out of the range of the field 
+/// Returns true if row or column are out of the range of the field
 fn outside_field(row: usize, column: usize, field: &Vec<Vec<Cell>>, i: usize) -> bool {
     (row >= field.len()) || (column >= (*field[i]).len())
 }
@@ -78,7 +77,7 @@ fn outside_field(row: usize, column: usize, field: &Vec<Vec<Cell>>, i: usize) ->
 #[cfg(test)]
 mod mine_finder_test {
     use crate::cell::Cell;
-    use crate::mine_finder::{find_mines, outside_field, invalid_field};
+    use crate::mine_finder::{find_mines, invalid_field, outside_field};
 
     #[test]
     pub(crate) fn count_mines_squared_field() {
@@ -270,10 +269,7 @@ mod mine_finder_test {
             Cell::new(b'*').unwrap(),
             Cell::new(b'*').unwrap(),
         ];
-        let line2 = vec![
-            Cell::new(b'.').unwrap(),
-            Cell::new(b'*').unwrap(),
-        ];
+        let line2 = vec![Cell::new(b'.').unwrap(), Cell::new(b'*').unwrap()];
         let line3 = vec![
             Cell::new(b'.').unwrap(),
             Cell::new(b'*').unwrap(),

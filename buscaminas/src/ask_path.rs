@@ -16,7 +16,6 @@ use crate::errors::GameError;
 /// assert!(ask_path().is_ok());
 /// ```
 /// 
-
 pub fn ask_path() -> Result<String, GameError> {
     let mut path = String::new();
     println!("Please enter the file path:");

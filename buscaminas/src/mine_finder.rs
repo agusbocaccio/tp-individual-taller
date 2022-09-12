@@ -53,26 +53,31 @@ pub fn find_mines(field: &mut Vec<Vec<Cell>>) -> Result<(), GameError> {
     Ok(())
 }
 
-fn invalid_field(field: &Vec<Vec<Cell>>) -> bool {
+
+/// Returns true if any row of the received field is longer than any other.
+fn invalid_field(field: &[Vec<Cell>]) -> bool {
     return field.iter().any(|line| line.len() != field[0].len());
 }
 
+/// Returns a valid usize range. 
+/// If i is zero or less than zero it will return a range (0..i).
+/// If i is more than zero it will return a range (i-1..i+1).
 fn get_range(i: usize) -> std::ops::RangeInclusive<usize> {
-    if i == 0 {
+    if i <= 0 {
         0..=i + 1
     } else {
         i - 1..=i + 1
     }
 }
 
-fn outside_field(k: usize, l: usize, field: &Vec<Vec<Cell>>, i: usize) -> bool {
-    (k >= field.len()) || (l >= (*field[i]).len())
+fn outside_field(row: usize, column: usize, field: &Vec<Vec<Cell>>, i: usize) -> bool {
+    (row >= field.len()) || (column >= (*field[i]).len())
 }
 
 #[cfg(test)]
 mod mine_finder_test {
     use crate::cell::Cell;
-    use crate::mine_finder::{find_mines, outside_field};
+    use crate::mine_finder::{find_mines, outside_field, invalid_field};
 
     #[test]
     pub(crate) fn count_mines_squared_field() {
@@ -277,5 +282,26 @@ mod mine_finder_test {
 
         let field = vec![line1, line2, line3];
         assert!(outside_field(2, 5, &field, 0));
+    }
+
+    #[test]
+    pub(crate) fn field_with_different_length_row_is_invalid() {
+        let line1 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'*').unwrap(),
+        ];
+        let line2 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+        ];
+        let line3 = vec![
+            Cell::new(b'.').unwrap(),
+            Cell::new(b'*').unwrap(),
+            Cell::new(b'*').unwrap(),
+        ];
+
+        let field = vec![line1, line2, line3];
+        assert!(invalid_field(&field));
     }
 }

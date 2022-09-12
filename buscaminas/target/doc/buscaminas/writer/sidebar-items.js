@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["show_field","Receives a Cell matrix and prints the field with the * (bombs) and ‘.’(empty) characters."],["write_file",""]]};
+window.SIDEBAR_ITEMS = {"fn":[["show_field","Receives a Cell matrix and prints the field with the * (bombs) and ‘.’ (empty) characters."],["write_file","This function creates a file named ‘out.txt’, or overwrites it if it does already exists and writes  the field with the * (bombs) and ‘.’(empty) characters."]]};

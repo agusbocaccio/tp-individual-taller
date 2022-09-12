@@ -32,7 +32,6 @@
 <span id="26">26</span>
 <span id="27">27</span>
 <span id="28">28</span>
-<span id="29">29</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::io</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::errors::GameError</span>;
@@ -51,7 +50,6 @@
 <span class="doccomment">/// assert!(ask_path().is_ok());</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// </span>
-
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ask_path</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">GameError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">String::new</span>();
     <span class="macro">println!</span>(<span class="string">&quot;Please enter the file path:&quot;</span>);

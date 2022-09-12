@@ -89,7 +89,7 @@ mod reader_test {
 
     #[test]
     pub(crate) fn open_empty_file() {
-        let result = read_file("files/empty_field.txt".to_string());
+        let result = read_file("files/empty_file.txt".to_string());
         assert!(result.is_ok());
     }
 

@@ -2,7 +2,7 @@ use std::{fs::File, io::Write};
 
 use crate::{cell::Cell, errors::GameError};
 
-/// Receives a Cell matrix and prints the field with the * (bombs) and '.'(empty) characters.
+/// Receives a Cell matrix and prints the field with the * (bombs) and '.' (empty) characters.
 ///
 ///
 /// # Examples
@@ -47,6 +47,41 @@ pub fn show_field(field: &Vec<Vec<Cell>>) {
     }
 }
 
+/// This function creates a file named 'out.txt', or overwrites it if it does already exists and writes  the field with the * (bombs) and '.'(empty) characters.
+///
+/// # Errors
+///
+/// This function will return an error if the file could not be created (GameError::CouldNotOpenFile) or if the data could not be written on the file (GameError::CouldNotOpenFileu)
+///
+/// # Examples
+///
+/// ```
+/// use buscaminas::writer::write_file;
+///
+/// use buscaminas::cell::Cell;
+/// let field = vec![
+///       vec![
+///           Cell::EmptyCell { bombs: (0) },
+///           Cell::BombCell,
+///           Cell::BombCell,
+///           Cell::EmptyCell { bombs: (0) }
+///       ],
+///       vec![
+///           Cell::EmptyCell { bombs: (0) },
+///           Cell::EmptyCell { bombs: (0) },
+///           Cell::BombCell,
+///           Cell::EmptyCell { bombs: (0) },
+///         ]];
+/// assert!(write_file(&field).is_ok());
+/// 
+/// ```
+/// 
+/// The output will be:
+/// 
+/// .**.
+/// 
+/// ..*.
+/// 
 pub fn write_file(data: &Vec<Vec<Cell>>) -> Result<(), GameError> {
     let path = "out.txt";
 
